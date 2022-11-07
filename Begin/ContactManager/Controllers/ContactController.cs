@@ -1,6 +1,7 @@
 ﻿using ContactManager.Models;
 using ContactManager.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
 namespace ContactManager.Controllers
 {
@@ -26,13 +27,22 @@ namespace ContactManager.Controllers
         }
 
 
-        [Route("save")]
-        public bool Save()
+        [Route("add")]
+        public Contact[] Save()
         {
             var result = contactRepository.SaveContact(
                 new Contact { Id = 1, Name = "Save me" }
                 );
             return result;
+        }
+
+        [HttpPost]
+        [Route("post")]
+        public IActionResult Post(Contact contact)
+        {
+            var result = this.contactRepository.SaveContact(contact);
+
+            return Ok(result[result.Length-1]);
         }
     }
 }

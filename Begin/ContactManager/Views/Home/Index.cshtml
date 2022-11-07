@@ -2,7 +2,48 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="body">
+    <ul id="contacts"></ul>
+
+    <form id="saveContactForm" method="post">
+        <h3>Create a new Contact</h3>
+        <p>
+            <label for="contactId">Contact Id:</label>
+            <input type="text" name="Id" />
+        </p>
+        <p>
+            <label for="contactName">Contact Name:</label>
+            <input type="text" name="Name" />
+        </p>
+        <input type="button" id="saveContact" value="Save" />
+    </form>
 </div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function()
+        {
+                $.getJSON('/contact/get', function(contactsJsonPayload)
+                {
+                    $(contactsJsonPayload).each(function(i, item)
+                    {
+                        $('#contacts').append('<li>' + '<span>' + contactsJsonPayload[i].name + '</span>' + '</li>');
+                    });
+                });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('#saveContact').click(function () {
+            $.post("contact/post",
+                $("#saveContactForm").serialize(),
+                function (value) {
+                    $('#contacts').append('<li>' + value.name + '</li>');
+                },
+                "json"
+            );
+        });
+    </script>
+}
+

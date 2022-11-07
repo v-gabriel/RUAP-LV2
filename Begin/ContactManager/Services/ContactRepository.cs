@@ -54,7 +54,7 @@ namespace ContactManager.Services
             };
         }
 
-        public bool SaveContact(Contact contact)
+        public Contact[] SaveContact(Contact contact)
         {
             if (ctx != null)
             {
@@ -69,16 +69,16 @@ namespace ContactManager.Services
                     list.Add(contact);
                     MemoryCache.Default[CacheKey] = list.ToArray();
 
-                    return true;
+                    return (Contact[])MemoryCache.Default[CacheKey];
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    return false;
+                    return null;
                 }
             }
 
-            return false;
+            return null;
 
         }
     }
