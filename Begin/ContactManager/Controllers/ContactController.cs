@@ -9,9 +9,9 @@ namespace ContactManager.Controllers
     {
         private ContactRepository contactRepository;
 
-        public ContactController()
+        public ContactController(ContactRepository contactRepo)
         {
-            this.contactRepository = new ContactRepository();
+            this.contactRepository = contactRepo;
         }
 
         public IActionResult Index()
@@ -23,6 +23,16 @@ namespace ContactManager.Controllers
         public Contact[] Get()
         {
             return contactRepository.GetAllContacts();
+        }
+
+
+        [Route("save")]
+        public bool Save()
+        {
+            var result = contactRepository.SaveContact(
+                new Contact { Id = 1, Name = "Save me" }
+                );
+            return result;
         }
     }
 }
